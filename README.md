@@ -1,13 +1,30 @@
 # ICAOcheck
 
-## Lighting:
+## To run this project:
+First ensure python is properly installed and configured for use on your machine.
+```python
+# Install packages
+pip install -r requirements.txt
+
+python main.py
+```
+
+If you get an error related to tkinter, you'll need to run:
+```python
+# If using homebrew on macos, you can run:
+brew install python-tk
+
+# You can find methods for other PackageManagers/OS on internet.
+```
+
+### Lighting:
 Lighting check works by examining the mean intensity values of each color channel at 4 specific locations in the image. Canny edge detection filter is applied as well to check if each measurement zone is homogeneous enough for an accurate mean intensity measurement.
 
 <p align="left">
   <img src="https://i.imgur.com/eVDUu2n.jpg" width="200"/>
 </p>
 
-### Explanation of output messages
+#### Explanation of output messages
 **"Failed: Number of detected faces != 1"**  
 Dlib frontal face detector detected zero or more than one face in the input image.
 
