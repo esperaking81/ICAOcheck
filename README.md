@@ -6,6 +6,7 @@ First ensure python is properly installed and configured for use on your machine
 # Install packages
 pip install -r requirements.txt
 
+# Run
 python main.py
 ```
 

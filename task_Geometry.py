@@ -15,7 +15,7 @@ headlength_ratio = False
 head_roll = False
 image_w = 0
 image_l = 0
-array = np.zeros((4), dtype=np.int)
+array = np.zeros((4), dtype=int)
 ausrichtung = "m"
 result_path = ""
 final_path = ""
