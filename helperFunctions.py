@@ -5,7 +5,7 @@ import numpy as np
 
 def shapeToArray(shape):
     #convert dlib shape object to array
-    array = np.zeros((68, 2), dtype = np.int)
+    array = np.zeros((68, 2), dtype = int)
 
     #iterate over the facial landmarks
     for i in range(0, 68):
