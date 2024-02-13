@@ -46,23 +46,28 @@ def _checkGlasses(image,shape):
 def checkExistenceOfGlasses(image):
     #get image data
     img = cv2.imread(image.image_path+image.image_name,0)
-    img2 = img.copy()
+    img_h, img_w = img.shape[:2]
+
+    # img2 = img.copy()
     #get template data - for the future we can read an array of templates
-    #ToDo: change the filepath
-    #template = cv2.imread("C:/Users/Patrick Liedtke/github/ICAOcheck/brille3.jpg",0)
     template = cv2.imread(os.path.realpath(__file__).replace('\\', '/').rsplit('/', 1)[0] + '/' + "brille3.jpg", 0)
+
+    resized_template = cv2.resize(template, (img_w, img_h))
+
     #for template in templates:
-    w, h = img.shape[::-1]
-    img = img2.copy()
+    # w, h = img.shape[::-1]
+
+    # img = img2.copy()
     #we use TM_CCORR_NORMED as template matching method
     method = eval('cv2.TM_CCORR_NORMED')
+
     # Apply template Matching
-    res = cv2.matchTemplate(img,template,method)
+    res = cv2.matchTemplate(img,resized_template,method)
     #get the minimum and maximum point value or location of the result
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-    #show the result after template matching with rectagle where the template is located
 
-    #top_left = max_loc
+    # show the result after template matching with rectagle where the template is located
+    # top_left = max_loc
     # bottom_right = (top_left[0] + w, top_left[1] + h)
     # cv2.rectangle(img,top_left, bottom_right, 255, 2)
     # plt.subplot(121),plt.imshow(res,cmap = 'gray')
@@ -78,11 +83,7 @@ def checkExistenceOfGlasses(image):
     else:
         return False
 
-def checkEyeVisibility(image,shape):
-
-    #get image data
-    image_data = mpimg.imread(image.image_path + image.image_name)
-
+def checkEyeVisibility(shape):
     #shape[n][m]: n is the facial landmark from 0 to 67, m is the pixel-coordinate (0 = x-value, 1 = y-value)
     #description of n-values
     #[0 - 16]: Jawline

@@ -25,6 +25,12 @@ import numpy as np
 Check_Cut = False
 plot_landmarks = False
 
+my_filename = "gilou.jpg"
+
+my_dir_path = "/Users/espera/personal/ICAOcheck/subjects/"
+
+my_picture = f'{my_dir_path}{my_filename}'
+
 class Singleton(type):
     _instances = {}
     def __call__(cls, *args, **kwargs):
@@ -40,13 +46,13 @@ class myUI(Frame, metaclass=Singleton):
         newvariable358 = IntVar()
         plot_landmarks = IntVar()
 
-        self.filepath_label = StringVar()
+        self.filepath_label = my_dir_path
         self.filename_label = StringVar()
         self.score_label = StringVar()
         self.type_label = StringVar()
         self.filenumber_label = StringVar()
-        self.filepath = ""
-        self.file_list = []
+        self.filepath = my_picture
+        self.file_list = [MatchableImage(my_dir_path, my_filename)]
         self.currentDisplayedResult = 1
         self.typeLabelList = []
         self.scoreLabelList = []
@@ -97,6 +103,8 @@ class myUI(Frame, metaclass=Singleton):
                                      command=self.plot_landmarks)
         self.checkBoxF.grid(row=3, column=6, columnspan=3, sticky=W)
 
+        self.display_result(self.file_list[0])
+
     def check_cut(self):
         global Check_Cut
         Check_Cut = not Check_Cut
@@ -108,7 +116,7 @@ class myUI(Frame, metaclass=Singleton):
     def load_files(self):
         #load all files in the same directory as the selected file
         self.filepath = askopenfilename(
-            initialdir="C:/",
+            initialdir="/",
             title="Load an Image file",
             filetypes=(("Image files", "*.jpg;*.png;*.bmp;*.tif"), ("All files", "*.*")))
         dirpath = self.filepath.rsplit('/', 1)[0]+'/'
@@ -136,6 +144,7 @@ class myUI(Frame, metaclass=Singleton):
         global plot_landmarks
 
         if self.file_list != []:
+            #load dlib face detector
             detector = dlib.get_frontal_face_detector()
             #load dlib pre-trained predictor
             predictor = dlib.shape_predictor(os.path.realpath(__file__).replace('\\', '/').rsplit('/', 1)[0] + '/' + "shape_predictor_68_face_landmarks.dat")
@@ -171,7 +180,7 @@ class myUI(Frame, metaclass=Singleton):
     def display_result(self, matchableImg):
         #generate Image from filepath
         image = Image.open(matchableImg.image_path+matchableImg.image_name)
-        image.thumbnail((280, 360), Image.ANTIALIAS)
+        image.thumbnail((280, 360), Image.LANCZOS)
         photo = ImageTk.PhotoImage(image)
         self.imageWindow = Canvas(self, width=280, height=360)
         self.imageWindow.create_image(0, 0, anchor=NW, image=photo)

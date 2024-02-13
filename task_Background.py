@@ -41,7 +41,7 @@ def _checkBackground(image):
     #find longest contour at edges
     #used http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_table_of_contents_contours/py_table_of_contents_contours.html
     contour_info = []
-    _, contours, _= cv2.findContours(image_filter, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(image_filter, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     for c in contours:
         contour_info.append((
             c,
@@ -64,22 +64,22 @@ def _checkBackground(image):
     # Convert back to 8-bit
     masked = (masked * 255).astype('uint8')                
     
-    #create masked array
+    # create masked array
     image_gray_masked = ma.masked_array(image_gray,mask_stack)  
 
-    #calculate entropy with histogram
+    # calculate entropy with histogram
     hist = numpy.histogram(image_gray_masked.compressed(),range(0, 256),density=True)
     entropy = 0
     for x in hist[0]:
         if (x != 0.0) : entropy = entropy - (x * math.log2(x))
 
-    #create mask for floodfill
+    # create mask for floodfill
     h, w = image_gray.shape[:2]
     mask_flood = numpy.pad(mask,1,mode="constant").astype('uint8') 
     mask_flood = numpy.array_split(mask_flood,2,axis=1)
     mask_flood = numpy.concatenate((mask_flood[1],mask_flood[0]), axis=1)
 
-    #split picture vertical, and switch sides
+    # split picture vertical, and switch sides
     image_gray_split = numpy.array_split(image_gray,2,axis=1)
     image_gray_split = numpy.concatenate((image_gray_split[1],image_gray_split[0]), axis=1)
 
@@ -90,7 +90,7 @@ def _checkBackground(image):
     cv2.floodFill(image_floodfill, mask_flood, (int(w/2),0), 0, loDiff=1,upDiff=1 )
     
      
-    #calculate how many pixels are not in floodfill and mask
+    # calculate how many pixels are not in floodfill and mask
     image_floodfill = numpy.array_split(image_floodfill,2,axis=1)
     image_floodfill = numpy.concatenate((image_floodfill[1],image_floodfill[0]), axis=1)
     image_floodfill  = image_floodfill.astype('float32') / 255.0        

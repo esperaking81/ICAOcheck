@@ -12,8 +12,7 @@ from skimage import io
 #this function check wheter the expression is neutral
 def checkExpression(imagelist):
     for image in imagelist:
-
-        #for every image it will check whether a face is detected
+        # for every image it will check whether a face is detected
         if not image.facial_landmarks_error:
             image.matching_results["Expression"] =  _checkExpression(image, image.facial_landmarks)
         else:

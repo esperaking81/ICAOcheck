@@ -16,7 +16,7 @@ head_roll = False
 image_w = 0
 image_l = 0
 array = np.zeros((4), dtype=int)
-ausrichtung = "m"
+orientation = "m"
 result_path = ""
 final_path = ""
 check_cut = 0
@@ -215,7 +215,7 @@ def _checkGeometry(image, shape):
         ausgabe = ausgabe + ", \nKopf zu stark gedreht"
         n_roll = n_roll + 1
 
-    #could we could the image
+    #could we cut the image
     if (
             image_ratio == False
             or horizontal_ratio == False
@@ -305,7 +305,7 @@ def cut(image_data, A, B, Mh, Mv, W, L, difference_allowed, dx, M):
     global image_l
     global image_w
     global array
-    global ausrichtung
+    global orientation
 
     #check 21 cases
     for i in range(0, 20):
